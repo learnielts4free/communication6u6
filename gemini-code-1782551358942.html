@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giao Tiếp & Hội Thoại Tiếng Anh - Ms Lê Hằng English</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --correct-color: #00D26A;
+            --correct-shadow: #009E4F;
+            --wrong-color: #FF4757;
+            --wrong-shadow: #D32F2F;
+            --primary-purple: #8854C0;
+            --primary-yellow: #FDCB6E;
+            --primary-teal: #00C9A7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #8854C0, #FDCB6E, #00C9A7, #E84393);
+            background-size: 400% 400%;
+            animation: gradientAnimation 12s ease infinite;
+            min-height: 100vh;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bg-pattern {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.12;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M30 10l3 6 6 1-4 4 1 6-6-3-6 3 1-6-4-4 6-1z' fill='%23ffffff' fill-opacity='1'/%3E%3C/svg%3E");
+        }
+
+        .teacher-header {
+            font-size: 14px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            background: rgba(0,0,0,0.18);
+            padding: 6px 16px;
+            border-radius: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .reminder-banner {
+            background-color: #FFF9E6;
+            border: 3px solid #FDCB6E;
+            color: #7F5F00;
+            padding: 18px;
+            border-radius: 16px;
+            max-width: 700px;
+            width: 100%;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            font-size: 14px;
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        .reminder-banner h4 {
+            font-size: 16px;
+            color: #D63031;
+            margin-bottom: 6px;
+        }
+
+        .reminder-banner p {
+            font-weight: bold;
+            margin-top: 5px;
+            color: #E84393;
+        }
+
+        .exercise-title {
+            max-width: 700px;
+            width: 100%;
+            color: white;
+            font-size: 15.5px;
+            font-weight: 700;
+            margin: 15px 0 12px 0;
+            background: rgba(255, 255, 255, 0.22);
+            padding: 12px 18px;
+            border-radius: 14px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            line-height: 1.4;
+        }
+
+        .card-wrapper {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .question-header {
+            background: #6C5CE7;
+            color: white;
+            padding: 16px;
+            border-radius: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 5px 0 #4834DF;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dialogue-text {
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.6;
+            margin-top: 10px;
+            border-top: 1px dashed rgba(255,255,255,0.3);
+            padding-top: 10px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .option-btn {
+            background-color: #F5F7F8;
+            border: none;
+            border-radius: 18px;
+            padding: 15px 12px;
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #2D3436;
+            cursor: pointer;
+            outline: none;
+            transition: transform 0.1s, background-color 0.1s;
+            box-shadow: 0 6px 0 #DFE6E9;
+            text-align: left;
+            padding-left: 18px;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: scale(1.02) translateY(-2px);
+        }
+
+        .option-btn:active:not(:disabled) {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #DFE6E9;
+        }
+
+        /* Shake Animation */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .shake-effect {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .explanation-box {
+            background: #FFF;
+            border-radius: 16px;
+            border-left: 6px solid #FF9800;
+            padding: 18px;
+            margin-top: 20px;
+            box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        .explanation-banner {
+            background-color: #FFFDE7;
+            border: 1px dashed #FFB300;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 12px;
+            color: #E65100;
+        }
+
+        .explanation-content {
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #2D3436;
+        }
+
+        .exp-section-title {
+            font-weight: 700;
+            margin-top: 10px;
+            color: #2E7D32;
+            font-size: 14px;
+        }
+
+        .eng-word { color: #1E88E5; font-weight: 700; }
+        .ipa-tag {
+            background-color: #EDE7F6;
+            color: #5E35B1;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+        .vi-meaning { color: #D84315; font-weight: 700; }
+
+        .footer-actions {
+            text-align: center;
+            margin: 30px 0;
+            width: 100%;
+            max-width: 700px;
+        }
+
+        .submit-btn {
+            background-color: #FF9800;
+            color: white;
+            border: none;
+            padding: 14px 50px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #E65100;
+            transition: transform 0.1s;
+        }
+
+        .submit-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #E65100;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            padding: 35px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 460px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+        }
+
+        .modal-content h3 {
+            color: #8854C0;
+            margin-bottom: 12px;
+            font-size: 24px;
+        }
+
+        .modal-content p {
+            font-size: 16px;
+            margin-bottom: 24px;
+            line-height: 1.6;
+            color: #4f5d63;
+        }
+
+        .close-btn {
+            background-color: #00C9A7;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 15px;
+            box-shadow: 0 4px 0 #00A88F;
+        }
+
+        .close-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #00A88F;
+        }
+
+        @media (max-width: 550px) {
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-pattern"></div>
+
+    <div class="teacher-header">Giáo viên tạo: Ms Lê Hằng English</div>
+
+    <div class="reminder-banner">
+        <h4>⚠️ LỜI NHẮC CỰC KỲ QUAN TRỌNG ⚠️</h4>
+        Chỉ có đọc kỹ giải thích ngay sau mỗi câu, sau đó ghi lại từ vựng/cấu trúc mới vào vở để học thì mới thực sự giỏi lên.<br>
+        Làm cho xong mà không đọc giải thích hay đọc qua loa không ghi chép thì chỉ tốn thời gian vô ích!<br>
+        <p>* Kéo tới đâu, làm tới đó! *</p>
+    </div>
+
+    <div id="quizContainer" style="width: 100%; display: flex; flex-direction: column; align-items: center;"></div>
+
+    <div class="footer-actions">
+        <button class="submit-btn" onclick="calculateTotalScore()">Nộp bài</button>
+    </div>
+
+    <div class="modal" id="scoreModal">
+        <div class="modal-content">
+            <h3 id="scoreTitle">Kết quả bài làm</h3>
+            <p id="scoreBody"></p>
+            <button class="close-btn" onclick="closeScoreModal()">Đóng</button>
+        </div>
+    </div>
+
+    <script>
+        const quizDataset = [
+            {
+                "id": 1,
+                "type": "exchange",
+                "title": "Exercise 1 - Câu 1",
+                "dialogue": "<b>Anna:</b> I think we should try to have a healthier lifestyle. _________ going to the gym together twice a week?<br><b>Ben:</b> That sounds great! Let's start next Monday.",
+                "options": [
+                    {"id": "A", "text": "What about"},
+                    {"id": "B", "text": "Do you mind"},
+                    {"id": "C", "text": "Could you"},
+                    {"id": "D", "text": "Would you like"}
+                ],
+                "correct": "A",
+                "banner": "Chọn cụm từ phù hợp nhất để hoàn thành lời gợi ý đối thoại.",
+                "step1": "Anna: 'Tớ nghĩ chúng ta nên cố gắng có một lối sống lành mạnh hơn. _________ cùng nhau đi tập gym hai lần một tuần không?' - Ben: 'Nghe tuyệt đấy! Hãy bắt đầu vào thứ Hai tới nhé.'",
+                "step2": "<b>A. What about</b> + V-ing <span class='ipa-tag'>/wɒt ə'baʊt/</span>: Còn về việc... thì sao? (Dùng đưa ra lời gợi ý).<br><b>B. Do you mind</b> + V-ing <span class='ipa-tag'>/duː juː maɪnd/</span>: Bạn có phiền... không?<br><b>C. Could you</b> + V-bare <span class='ipa-tag'>/kʊd juː/</span>: Bạn có thể... không?<br><b>D. Would you like</b> + to V <span class='ipa-tag'>/wʊd juː laɪk/</span>: Bạn có muốn... không?",
+                "step3": "Đáp án đúng là <b>A. What about</b> vì phía sau vị trí trống là động từ thêm đuôi -ing (<span class='eng-word'>going</span>), cấu trúc này dùng để đề xuất một ý tưởng hoặc lời mời một cách tự nhiên.",
+                "step4": "Loại B vì không phù hợp ngữ cảnh phản hồi đồng thuận vui vẻ của Ben. Loại C và D vì sai cấu trúc ngữ pháp (chúng đi kèm động từ nguyên mẫu và to-inf)."
+            },
+            {
+                "id": 2,
+                "type": "exchange",
+                "title": "Exercise 1 - Câu 2",
+                "dialogue": "<b>Tom:</b> In my opinion, social media is changing young people's lifestyle too much.<br><b>Lisa:</b> _________. They spend hours on their phones instead of talking face-to-face.",
+                "options": [
+                    {"id": "A", "text": "You're joking"},
+                    {"id": "B", "text": "I totally agree"},
+                    {"id": "C", "text": "Are you serious"},
+                    {"id": "D", "text": "That's strange"}
+                ],
+                "correct": "B",
+                "banner": "Chọn phản hồi thể hiện đúng mức độ đồng thuận trong cuộc thảo luận.",
+                "step1": "Tom: 'Theo quan điểm của tớ, mạng xã hội đang thay đổi lối sống của giới trẻ quá nhiều.' - Lisa: '_________. Họ dành hàng giờ đồng hồ dán mắt vào điện thoại thay vì nói chuyện trực tiếp.'",
+                "step2": "<b>A. You're joking</b> <span class='ipa-tag'>/juːə 'dʒəʊkɪŋ/</span>: Bạn đang đùa à.<br><b>B. I totally agree</b> <span class='ipa-tag'>/aɪ 'təʊtəli ə'ɡriː/</span>: Tớ hoàn toàn đồng ý.<br><b>C. Are you serious</b> <span class='ipa-tag'>/ɑː juː 'sɪəriəs/</span>: Bạn nghiêm túc đấy chứ?<br><b>D. That's strange</b> <span class='ipa-tag'>/ðæts streɪndʒ/</span>: Điều đó thật kỳ lạ.",
+                "step3": "Đáp án đúng là <b>B</b>. Câu sau của Lisa 'They spend hours on their phones...' giải thích và minh họa làm rõ thêm cho ý kiến tiêu cực của Tom về mạng xã hội, chứng tỏ cô hoàn toàn đồng thuận.",
+                "step4": "Loại A, C, D vì các câu này biểu thị sự nghi ngờ, phản bác hoặc ngạc nhiên, mâu thuẫn với vế bổ trợ phía sau của Lisa."
+            },
+            {
+                "id": 3,
+                "type": "exchange",
+                "title": "Exercise 1 - Câu 3",
+                "dialogue": "<b>Mai:</b> My family always has dinner together at 6 p.m. without phones on the table.<br><b>Peter:</b> _________. That's a really nice family tradition!",
+                "options": [
+                    {"id": "A", "text": "You must be kidding"},
+                    {"id": "B", "text": "I don't think so"},
+                    {"id": "C", "text": "How wonderful"},
+                    {"id": "D", "text": "Are you sure"}
+                ],
+                "correct": "C",
+                "banner": "Chọn lời cảm thán biểu đạt thái độ khen ngợi tích cực.",
+                "step1": "Mai: 'Gia đình tớ luôn ăn tối cùng nhau lúc 6 giờ tối và không để điện thoại trên bàn ăn.' - Peter: '_________. Đó thực sự là một truyền thống gia đình tuyệt vời!'",
+                "step2": "<b>A. You must be kidding</b> <span class='ipa-tag'>/juː mʌst bi 'kɪdɪŋ/</span>: Cậu chắc đang đùa rồi.<br><b>B. I don't think so</b> <span class='ipa-tag'>/aɪ dəʊnt θɪŋk səʊ/</span>: Tớ không nghĩ vậy.<br><b>C. How wonderful</b> <span class='ipa-tag'>/haʊ 'wʌndəfl/</span>: Thật là tuyệt vời biết bao!<br><b>D. Are you sure</b> <span class='ipa-tag'>/ɑː juː ʃɔː/</span>: Cậu có chắc không?",
+                "step3": "Đáp án đúng là <b>C</b>. Đây là câu cảm thán mang nghĩa tích cực, tương đồng và dẫn dắt mượt mà sang lời khen ngợi ngay sau: 'That's a really nice family tradition!'.",
+                "step4": "Loại A, B, D vì mang sắc thái hoài nghi, phủ định hoặc không tin tưởng, không tương hợp với lời khen ngợi phía sau."
+            },
+            {
+                "id": 4,
+                "type": "exchange",
+                "title": "Exercise 1 - Câu 4",
+                "dialogue": "<b>David:</b> I wake up at 5 a.m. every day to do yoga before work.<br><b>Sarah:</b> _________! I can never get up that early.",
+                "options": [
+                    {"id": "A", "text": "That's amazing"},
+                    {"id": "B", "text": "Spot on"},
+                    {"id": "C", "text": "Sounds boring"},
+                    {"id": "D", "text": "Yes, I do"}
+                ],
+                "correct": "A",
+                "banner": "Chọn đáp án biểu thị sự ngưỡng mộ hoặc ngạc nhiên tích cực.",
+                "step1": "David: 'Tớ thức dậy lúc 5 giờ sáng mỗi ngày để tập yoga trước khi đi làm.' - Sarah: '_________! Tớ chẳng bao giờ có thể dậy sớm được như thế.'",
+                "step2": "<b>A. That's amazing</b> <span class='ipa-tag'>/ðæts ə'meɪzɪŋ/</span>: Thật là kinh ngạc/tuyệt vời!<br><b>B. Spot on</b> <span class='ipa-tag'>/spɒt ɒn/</span>: Chính xác hoàn toàn (Dùng khi đồng ý một nhận định).<br><b>C. Sounds boring</b> <span class='ipa-tag'>/saʊndz 'bɔːrɪŋ/</span>: Nghe có vẻ nhàm chán.<br><b>D. Yes, I do</b> <span class='ipa-tag'>/jes aɪ duː/</span>: Vâng, tớ có làm.",
+                "step3": "Đáp án đúng là <b>A</b> vì Sarah thể hiện sự khâm phục việc David thức dậy sớm làm việc lành mạnh, điều cô không thể tự làm được.",
+                "step4": "Loại B vì sai ngữ cảnh đối thoại. Loại C mang nghĩa bất lịch sự. Loại D sai hoàn toàn vì đây không phải câu hỏi đuôi hay câu hỏi Yes/No."
+            },
+            {
+                "id": 5,
+                "type": "exchange",
+                "title": "Exercise 1 - Câu 5",
+                "dialogue": "<b>Linda:</b> Why don't you try a digital detox? No phone or computer for one weekend.<br><b>Mike:</b> _________. I need my phone for everything!",
+                "options": [
+                    {"id": "A", "text": "Great idea"},
+                    {"id": "B", "text": "No way"},
+                    {"id": "C", "text": "Spot on"},
+                    {"id": "D", "text": "Sound lovely"}
+                ],
+                "correct": "B",
+                "banner": "Chọn lời từ chối phản bác phù hợp với lý do được đưa ra.",
+                "step1": "Linda: 'Tại sao cậu không thử thanh lọc kỹ thuật số xem? Không dùng điện thoại hay máy tính trong một ngày cuối tuần.' - Mike: '_________. Tớ cần điện thoại cho mọi việc mà!'",
+                "step2": "<b>A. Great idea</b> <span class='ipa-tag'>/ɡreɪt aɪ'dɪə/</span>: Ý tưởng tuyệt vời.<br><b>B. No way</b> <span class='ipa-tag'>/nəʊ weɪ/</span>: Không đời nào / Không thể nào.<br><b>C. Spot on</b> <span class='ipa-tag'>/spɒt ɒn/</span>: Chuẩn xác.<br><b>D. Sound lovely</b> <span class='ipa-tag'>/saʊnd 'lʌvli/</span>: Nghe có vẻ dễ thương.",
+                "step3": "Đáp án đúng là <b>B. No way</b> vì vế sau Mike phản bác lại bằng lý do thiết yếu: 'I need my phone for everything!', chứng tỏ anh không đồng ý thực hiện đề xuất.",
+                "step4": "Loại A, D vì mang tính đồng ý, mâu thuẫn với vế sau. Loại C sai hoàn toàn cấu trúc hội thoại ứng dụng."
+            },
+            {
+                "id": 6,
+                "type": "conversation",
+                "title": "Exercise 2 - Câu 1",
+                "dialogue": "Sắp xếp các câu sau thành đoạn hội thoại hợp lý:<br>a. Lisa: I try to exercise three times a week. It helps me feel more energetic.<br>b. Tom: How do you stay so fit and healthy?<br>c. Tom: That's great! What kind of exercise do you do?<br>d. Lisa: I usually go jogging in the morning and do yoga in the evening.",
+                "options": [
+                    {"id": "A", "text": "b - a - c - d"},
+                    {"id": "B", "text": "a - b - c - d"},
+                    {"id": "C", "text": "c - d - a - b"},
+                    {"id": "D", "text": "b - c - a - d"}
+                ],
+                "correct": "A",
+                "banner": "Sắp xếp trình tự câu hỏi và câu trả lời theo logic đan xen.",
+                "step1": "Dịch nghĩa chuỗi hội thoại: b. Tom hỏi cách giữ vóc dáng -> a. Lisa bảo tập thể dục 3 lần/tuần -> c. Tom khen và hỏi loại hình tập -> d. Lisa liệt kê chạy bộ và yoga.",
+                "step2": "Phân tích cấu trúc từ khóa giao tiếp: Câu mở đầu phải là một câu hỏi mở tổng quát (b: <span class='eng-word'>How do you stay so fit...?</span>) dẫn đến câu trả lời tổng quan (a).",
+                "step3": "Đáp án đúng là <b>A (b-a-c-d)</b> vì nó tuân theo đúng trình tự Logic hội thoại: Hỏi tổng quan -> Trả lời tổng quan -> Hỏi chi tiết từ khóa phát sinh -> Trả lời chi tiết.",
+                "step4": "Các phương án B, C, D đều vi phạm trật tự logic khi xếp câu trả lời chi tiết lên trước câu hỏi hoặc đặt câu khen ngợi cô lập."
+            },
+            {
+                "id": 7,
+                "type": "conversation",
+                "title": "Exercise 2 - Câu 2",
+                "dialogue": "Sắp xếp các câu sau thành đoạn hội thoại hợp lý:<br>a. Mike: I stopped eating fast food last month.<br>b. Sarah: Really? How do you feel now?<br>c. Mike: Much better! I have more energy and I sleep better at night.<br>d. Sarah: That's amazing! Maybe I should try it too.",
+                "options": [
+                    {"id": "A", "text": "a - b - c - d"},
+                    {"id": "B", "text": "b - a - c - d"},
+                    {"id": "C", "text": "c - d - a - b"},
+                    {"id": "D", "text": "a - c - b - d"}
+                ],
+                "correct": "A",
+                "banner": "Sắp xếp trình tự phát triển sự kiện và cảm xúc nhân vật.",
+                "step1": "Dịch nghĩa chuỗi hội thoại: a. Mike đưa ra thông báo dừng ăn đồ ăn nhanh -> b. Sarah ngạc nhiên hỏi cảm giác hiện tại -> c. Mike bảo tốt hơn nhiều, ngủ ngon -> d. Sarah khen ngợi và muốn thử theo.",
+                "step2": "Từ khóa móc xích: Câu (b) hỏi '<span class='eng-word'>How do you feel now?</span>' phải đứng ngay trước câu (c) trả lời kết quả trạng thái cảm giác '<span class='eng-word'>Much better!</span>'.",
+                "step3": "Đáp án đúng là <b>A (a-b-c-d)</b>. Cuộc trò chuyện bắt đầu bằng một lời tuyên bố chủ động từ Mike, kết thúc bằng một bài học hoặc dự định hành động tương lai từ Sarah.",
+                "step4": "Các chuỗi B, C, D bị đứt gãy mạch thông tin, hỏi cảm giác khi chưa có sự kiện hoặc đưa ra kết luận quá sớm."
+            },
+            {
+                "id": 8,
+                "type": "conversation",
+                "title": "Exercise 2 - Câu 3",
+                "dialogue": "Sắp xếp các câu sau thành đoạn hội thoại hợp lý:<br>a. Anna: I work from 9 to 5, then spend time with my family.<br>b. David: How do you balance work and personal life?<br>c. David: Do you check work emails at home?<br>d. Anna: Never! When I'm home, I focus only on my family.<br>e. David: That's a healthy lifestyle. I should learn from you!",
+                "options": [
+                    {"id": "A", "text": "a - b - c - d - e"},
+                    {"id": "B", "text": "b - a - c - d - e"},
+                    {"id": "C", "text": "c - a - b - d - e"},
+                    {"id": "D", "text": "b - c - a - d - e"}
+                ],
+                "correct": "B",
+                "banner": "Sắp xếp hội thoại phỏng vấn chia sẻ kinh nghiệm lối sống.",
+                "step1": "Dịch nghĩa chuỗi hội thoại: b. David hỏi cách cân bằng -> a. Anna bảo làm việc 9-5 rồi về với gia đình -> c. David hỏi sâu về việc kiểm tra email -> d. Anna khẳng định không bao giờ -> e. David khen ngợi lối sống lành mạnh.",
+                "step2": "Mạch nối logic: Câu hỏi gốc (b) -> Trả lời gốc (a) -> Câu hỏi phát triển mở rộng (c) -> Trả lời phản bác mạnh (d) -> Đánh giá tổng kết và chốt hạ (e).",
+                "step3": "Đáp án đúng là <b>B (b-a-c-d-e)</b>. Chuỗi phản ánh hoàn hảo cấu trúc đối thoại chuyên sâu lồng ghép hai tầng câu hỏi đáp liên tục.",
+                "step4": "Các đáp án A, C, D đều đảo ngược trật tự câu hỏi, khiến hội thoại bị mất tự nhiên hoặc sai cấu trúc hỏi - đáp."
+            }
+        ];
+
+        let selectedAnswers = {};
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSynthSound(variant) {
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (variant === 'correct') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.16); // G5
+                gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.45);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.45);
+            } else {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(170, audioCtx.currentTime);
+                osc.frequency.linearRampToValueAtTime(110, audioCtx.currentTime + 0.25);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            }
+        }
+
+        function shuffle(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function buildQuizDOM() {
+            const container = document.getElementById('quizContainer');
+            let lastExerciseType = "";
+
+            quizDataset.forEach((q) => {
+                if (q.type === 'exchange' && lastExerciseType !== 'exchange') {
+                    lastExerciseType = 'exchange';
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'exercise-title';
+                    titleDiv.innerText = "Exercise 1: Choose the word or phrase (A, B, C, or D) that best completes each of the following exchanges.";
+                    container.appendChild(titleDiv);
+                } else if (q.type === 'conversation' && lastExerciseType !== 'conversation') {
+                    lastExerciseType = 'conversation';
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'exercise-title';
+                    titleDiv.innerText = "Exercise 2: Choose the correct answer (A, B, C, or D) to arrange the following sentences into a meaningful conversation.";
+                    container.appendChild(titleDiv);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card-wrapper';
+                card.id = `card-${q.id}`;
+
+                const header = document.createElement('div');
+                header.className = 'question-header';
+                header.innerHTML = `<div class="question-title">🌟 ${q.title}:</div><div class="dialogue-text">${q.dialogue}</div>`;
+                card.appendChild(header);
+
+                const grid = document.createElement('div');
+                grid.className = 'options-grid';
+                grid.id = `grid-${q.id}`;
+
+                const shuffledOptions = shuffle([...q.options]);
+                shuffledOptions.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerHTML = `<b>${opt.id}.</b> ${opt.text}`;
+                    btn.onclick = () => onBtnClick(q.id, opt.id, btn);
+                    grid.appendChild(btn);
+                });
+                card.appendChild(grid);
+
+                const expBox = document.createElement('div');
+                expBox.className = 'explanation-box';
+                expBox.id = `exp-${q.id}`;
+                expBox.innerHTML = `
+                    <div class="explanation-banner">${q.banner}</div>
+                    <div class="explanation-content">
+                        <div class="exp-section-title">1. Dịch nghĩa ngữ cảnh câu hỏi:</div>
+                        <p>${q.step1}</p>
+                        <div class="exp-section-title">2. Phân tích chi tiết từ vựng & Phiên âm chuẩn IPA:</div>
+                        <p>${q.step2}</p>
+                        <div class="exp-section-title">3. Tại sao đáp án được chọn lại ĐÚNG?</div>
+                        <p>${q.step3}</p>
+                        <div class="exp-section-title">4. Phân tích nguyên nhân các đáp án còn lại SAI:</div>
+                        <p>${q.step4}</p>
+                    </div>
+                `;
+                card.appendChild(expBox);
+                container.appendChild(card);
+            });
+        }
+
+        function onBtnClick(qId, choiceId, btnElement) {
+            if (selectedAnswers[qId] !== undefined) return;
+            selectedAnswers[qId] = choiceId;
+
+            const targetQuestion = quizDataset.find(x => x.id === qId);
+            const isCorrect = (choiceId === targetQuestion.correct);
+            const currentCard = document.getElementById(`card-${qId}`);
+            const siblingButtons = document.getElementById(`grid-${qId}`).querySelectorAll('.option-btn');
+
+            if (isCorrect) {
+                btnElement.style.backgroundColor = '#00D26A';
+                btnElement.style.color = 'white';
+                btnElement.style.boxShadow = '0 6px 0 #009E4F';
+                playSynthSound('correct');
+            } else {
+                btnElement.style.backgroundColor = '#FF4757';
+                btnElement.style.color = 'white';
+                btnElement.style.boxShadow = '0 6px 0 #D32F2F';
+                currentCard.classList.add('shake-effect');
+                playSynthSound('wrong');
+                
+                siblingButtons.forEach(b => {
+                    if (b.innerText.trim().startsWith(targetQuestion.correct)) {
+                        b.style.backgroundColor = '#00D26A';
+                        b.style.color = 'white';
+                        b.style.boxShadow = '0 6px 0 #009E4F';
+                    }
+                });
+            }
+
+            siblingButtons.forEach(b => b.disabled = true);
+            document.getElementById(`exp-${qId}`).style.display = 'block';
+        }
+
+        function calculateTotalScore() {
+            let score = 0;
+            let count = 0;
+            const total = quizDataset.length;
+
+            quizDataset.forEach(q => {
+                if (selectedAnswers[q.id] !== undefined) {
+                    count++;
+                    if (selectedAnswers[q.id] === q.correct) {
+                        score++;
+                    }
+                }
+            });
+
+            const percentage = total > 0 ? (score / total) * 100 : 0;
+            let reviewMessage = "";
+
+            if (percentage < 50) {
+                reviewMessage = "Điểm lần này chưa cao lắm, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!";
+            } else if (percentage >= 60 && percentage <= 80) {
+                reviewMessage = "Con đã có tiến bộ khá ổn rồi, con cố gắng đọc kỹ giải thích đáp án và làm lại nha. Cô tin con sẽ làm tốt hơn ở lần sau!";
+            } else {
+                reviewMessage = "Làm tốt lắm, con cố gắng ring điểm 10 ở lần sau nha!";
+            }
+
+            const modal = document.getElementById('scoreModal');
+            document.getElementById('scoreBody').innerHTML = `Số câu đã làm: <b>${count}/${total}</b>.<br>Đạt điểm số đúng: <b style="color:#00D26A; font-size: 22px;">${score}/${total}</b>.<br><br>💬 <b>Nhận xét từ Ms Lê Hằng:</b><br>${reviewMessage}`;
+            modal.style.display = 'flex';
+        }
+
+        function closeScoreModal() {
+            document.getElementById('scoreModal').style.display = 'none';
+        }
+
+        window.onload = buildQuizDOM;
+    </script>
+</body>
+</html>
